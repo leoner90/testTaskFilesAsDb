@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include("../partials/head"); %>
+  <body>
+    <%- include("../partials/navigation"); %>
+        <% students.map(student => { %>
+              <!-- make onclick + relocate to controler , or form sent to controler -->
+              <form method="post" action="/students/delete">
+                <div class="allStudentEl">
+                  <a href="/students/<%= student.Id_Student  %>"><%= student.Name  %></a>
+                  <button class="btn btn-danger btn-sm" value="<%= student.Id_Student  %>" name="btn" type="submit">
+                    DELETE ID = <%= student.Id_Student  %>
+                  </button>
+                </div>
+              </form>
+        <% }) %> 
+  </body>
+</html>

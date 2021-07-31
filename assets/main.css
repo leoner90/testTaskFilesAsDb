@@ -1,0 +1,20 @@
+body {
+    background: #36c9ee;
+    color: #fff;
+}
+
+.allStudentEl {
+    padding: 5px;
+}
+
+.allStudentEl> a {
+    display: block;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 22px;
+    font-style: italic;
+}
+
+.allStudentEl> a::after {
+    content: "...";
+}
