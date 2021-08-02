@@ -4,18 +4,13 @@
 
   <body>
     <%- include("../partials/navigation"); %>
-
-    
-
-
-    <% student.map(student => { %>
       <h4>
-        <%= student.Name %>
+        <%= student.name %>
     </h4>
     <p>
-        Age: <%= student.Age %>
+        Age: <%= student.age %>
     </p>
-  <% }) %>
+
 
     
   </body>

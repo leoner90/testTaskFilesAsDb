@@ -1,35 +1,21 @@
-//MYSQL CONNECT
-const db = require("../../mysql-connection");
+// const StudentsController = require("../controllers/StudentsController");
 class Students {
-  constructor(db) {
-    connection = this.db;
-    util = require('util');
-    // It is basically used to convert a method that returns responses using a callback function to return responses in a promise object. 
-    query = this.util.promisify(connection.query).bind(connection);
-  }
-  //GET ALL STUDENT LIST
-  getAll() {
-    const rows = this.query("SELECT * FROM student"); // returns result as a promise object
-    return rows;
+  getAll(allStudents) {
+      for(let i = 0 ; i < allStudents.length ; i++){
+        allStudents[i].name = allStudents[i].name + " The Best Business logic";
+      }
+      return allStudents;
   }
 
-  //GET SPECIFIC STUDENT
-  getById(id) { 
-    const rows = this.query("SELECT * FROM student WHERE Id_Student="+id); // returns result as a promise object
-    return rows;
-  }
+  getById(data){
+      data.name = data.name  + " is the special student  ";
+      return data;
+    }
 
-  //ADD NEW STUDENT
-  addStudent(newStudentData){
-    this.query(`INSERT INTO student (Name, Surname, Gender, Age , Id_faculty)  
-    VALUES ('${newStudentData.name}', 'surname', '${newStudentData.gender}', ${newStudentData.age}, 2)`);
-  }
+    deleteStudent(id){
 
-  //DELETE STUDENT BY ID
-  deleteStudent(id){
-    this.query("DELETE FROM student WHERE Id_Student="+id);
+    }
   }
-}
-
-//EXPORT CLASS
-module.exports = new Students();
+  
+  //EXPORT CLASS
+  module.exports = new Students();
