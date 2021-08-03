@@ -9,20 +9,23 @@ class RepositoryController {
   //GET ALL STUDENT LIST
   getAll() {
     return new Promise((resolve, reject) => {
+      //If cachse is true load data from it
       const value = myCache.get( "getAll" );
       if ( value != undefined ){   
         return resolve(Students.getAll(value));
       }
+      //else load data from file
       fs.readFile(studentDb ,"utf8", function(err, data) {
         if(err){
             return reject(err);
         } else {
             if(!data){
+              //if file is empty
               return resolve('error');
             }
+            // if file have exist and have data , Set Cache, send data to model and return result to main controller
             const result = JSON.parse(data);
-            const success = myCache.set( "getAll", result, 10000 );
-            //Model logic               
+            const success = myCache.set( "getAll", result, 10000 );         
             return resolve(Students.getAll(result));
         }
       });
@@ -32,20 +35,20 @@ class RepositoryController {
   //GET SPECIFIC STUDENT
   getById(id) { 
     return new Promise((resolve, reject) => {
-    fs.readFile(studentDb,"utf8", function(err, data) {
-      if(err){
-          return reject(err);
-      } else {
-          const stringifyData = JSON.parse(data);
-          for(let i = 0 ; i < stringifyData.length ; i++){
-              if(stringifyData[i].id == id){
-                  return resolve(Students.getById(stringifyData[i]));
-              }
-          }
-        return  Students.getById(id,stringifyData);
-      }
-    });
-      });  
+      fs.readFile(studentDb,"utf8", function(err, data) {
+        if(err){
+            return reject(err);
+        } else {
+            const stringifyData = JSON.parse(data);
+            for(let i = 0 ; i < stringifyData.length ; i++){
+                if(stringifyData[i].id == id){
+                    return resolve(Students.getById(stringifyData[i]));
+                }
+            }
+            return Students.getById(id,stringifyData);
+        }
+      });
+    });  
   }
 
   //AddStudent
@@ -67,6 +70,7 @@ class RepositoryController {
         });
       });   
     }
+
     //Get old data
     async function GetOldStudentData(){
       return new Promise((resolve, reject) => {
@@ -86,7 +90,7 @@ class RepositoryController {
     async function GetLastID(){
       return new Promise((resolve, reject) => {
         fs.readFile(lastStudentId ,"utf8", function(err, data) { 
-          if (err) throw err;
+          if (err) reject(err);
           const newId = JSON.parse(data) + 1;
           return resolve(newId);
         })
@@ -96,7 +100,6 @@ class RepositoryController {
   
   //DELETE STUDENT BY ID
   deleteStudent(id){
-    //PROMISE GOES HERE //===
     return new Promise((resolve, reject) => {
       fs.readFile(studentDb ,"utf8", function(err, data) {
         if(err) {
@@ -108,12 +111,12 @@ class RepositoryController {
               result.splice(index, 1);
               const stringifyData = JSON.stringify(result);
               fs.writeFile(studentDb , stringifyData , function (err) {
-                if (err) throw err;
+                if (err)  reject(err);
                 return resolve("True")
               });
             }
         }
-      });
+      })
     })
   }
 }
